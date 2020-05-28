@@ -22,19 +22,25 @@ This dataset consists of 5856 chest x-rays of varying image size. These images w
 
 ## Models
 
-I iterated on a Convoluted Neural Network - both a baseline using my unaugmented data and one with data augmentation, as well as a VGG19 with non-trainable CNN layers. My objective was to build a CNN with 90% accuracy on the test data, as I am using the test and validation datasets to measure the model performance. Although the model is being trained only on the train set to prevent data leakage, I set early stopping parameters and made changes to the hyperparameters based on the model's reduction of loss on the validation data, set with a patience of 20 epochs. W
+I iterated on a Convoluted Neural Network - one without and one with data augmentation, as well as a VGG19 with non-trainable CNN layers. My objective was to build a CNN with 85% accuracy on the test data. Although the model is being trained only on the train set to prevent data leakage, I set early stopping parameters and made changes to the hyperparameters based on the model's reduction of loss on the validation data, set with a patience of 20 epochs. 
+
+<img src="images/model_plot.png" alt="Structure of Convoluted Neural Network with Dense layers" style="width: 400px;"/>
+
+Notably, as perhaps it is better to overdiagnose than it is to underdiagnose pneumonia, recall is an important score for our evaluation of the model, as this metric describes whether the model correctly classified all possible positives of a certain class.
+
 
 ### Evaluation
 
-My from-scratch CNNs achieved an accuracy of 90% on the validation data most consistently when I had at least 3 convolutional layers and up to 4 dense layers. 
 
-* CNN Model: My baseline model shows evidence of overfitting as shown on the test set of data, although the best saved model achieved 
-* CNN Model with Data Augmentation:
-* VGG19:
+* CNN Model(**Best Recall**): As you can see above in the classification report of my baseline model, this CNN was very sensitive in classifiying a patient as having pneumonia, and only had an overall accuracy of 83%.
 
+<img src="images/Classification_Report.PNG" alt="Classification Report for Baseline Model" style="width: 200px;"/>
 
-## Further Work
- 
-Next steps for this model are to continue tuning hyperparameters to improve accuracy and minimize loss on the testing dataset - perhaps adding additional layers to my CNN, freezing layers in the VGG19, and using other pre-trained models such 
+* CNN Model with Data Augmentation: This model performed well on our test data as well, but only achieved an accuracy of .78 on our test data, and even more heavily overclassified healthy patients with pneumonia.
+* VGG19(**Best F1-Score/Accuracy**): Our VGG model achieved the highest accuracy on our test data. Similarly to our other models it is plagued by oversensitivity to our target class, but less so than our other two models.
+
+<img src="images/Confusion_Matrix_VGG.png" alt="Confusion Matrix for VGG-19" style="width: 200px;"/>
+
 
 ## Conclusion
+Our VGG-19 performed the best of our three highlighted models from the standpoint of not overclassifying patients with pneumonia, and our CNN from scratch achieved the highest recall, but along the way very heavily overclassified healthy patients as having pneumonia. Either seem to be a very viable model for implementing to identify x-rays, and it is worth continuing to feed new data to expand our training set, and we can continue to iterate in regards to specificity and sensitivity based on feedback from the business. 
